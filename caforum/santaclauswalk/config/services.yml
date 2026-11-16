@@ -1,0 +1,9 @@
+services:
+    caforum.santaclauswalk.listener:
+        class: caforum\santaclauswalk\event\main_listener
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@template'
+        tags:
+            - { name: event.listener }

@@ -1,0 +1,220 @@
+{% include 'overall_header.html' %}
+
+<style>
+.santawalk-head h1 { margin-bottom: 4px; }
+.santawalk-version { display: inline-block; vertical-align: middle; margin-left: 4px; padding: 2px 8px; border-radius: 8px; background: #2e7d32; color: #fff; font-size: 0.6em; font-weight: bold; line-height: 1.5; }
+.santawalk-desc { margin: 0 0 10px; }
+.santawalk-support { margin: 0 0 15px; padding: 10px 12px; border: 1px solid #d8dde3; border-radius: 6px; background: #f3f5f8; }
+.santawalk-support p { margin: 0 0 8px; font-size: 1.1em; }
+.santawalk-btn { display: inline-block; margin: 0 6px 4px 0; padding: 7px 14px; border-radius: 4px; font-size: 1.1em; font-weight: bold; text-decoration: none !important; }
+.santawalk-btn .icon { margin-right: 4px; }
+.santawalk-btn-donate { background: #2d6aa8; color: #fff !important; }
+.santawalk-btn-member { background: #2e8b43; color: #fff !important; }
+.santawalk-btn-support { background: #e2e4e6; color: #333 !important; }
+.santawalk-btn:hover { filter: brightness(1.1); }
+.santawalk-status-on { color: #2e7d32; font-weight: bold; }
+.santawalk-status-off { color: #c62828; font-weight: bold; }
+</style>
+
+<div class="santawalk-head">
+	<h1>{{ lang('ACP_SANTAWALK_TITLE') }}{% if SANTAWALK_EXT_VERSION %} <span class="santawalk-version">v{{ SANTAWALK_EXT_VERSION }}</span>{% endif %}</h1>
+	<p class="santawalk-desc">{{ lang('ACP_SANTAWALK_EXPLAIN') }}</p>
+	<div class="santawalk-support">
+		<p>{{ lang('SANTAWALK_SUPPORT_INTRO') }}</p>
+		<a class="santawalk-btn santawalk-btn-donate" href="{{ U_SANTAWALK_DONATE }}" target="_blank" rel="noopener"><i class="icon fa-heart" aria-hidden="true"></i>{{ lang('SANTAWALK_DONATE') }}</a>
+		<a class="santawalk-btn santawalk-btn-member" href="{{ U_SANTAWALK_MEMBER }}" target="_blank" rel="noopener"><i class="icon fa-user-plus" aria-hidden="true"></i>{{ lang('SANTAWALK_BECOME_MEMBER') }}</a>
+		<a class="santawalk-btn santawalk-btn-support" href="{{ U_SANTAWALK_SUPPORT }}" target="_blank" rel="noopener"><i class="icon fa-comments" aria-hidden="true"></i>{{ lang('SANTAWALK_SUPPORT') }}</a>
+	</div>
+</div>
+
+{% if S_ERROR %}
+<div class="errorbox">
+	<h3>{{ lang('WARNING') }}</h3>
+	<p>{{ ERROR_MSG }}</p>
+</div>
+{% endif %}
+
+{% if S_SANTAWALK_TEST_MODE %}
+<div class="errorbox">
+	<p>{{ lang('SANTAWALK_TEST_WARNING') }} <a href="{{ U_BOARD }}" target="_blank" rel="noopener">{{ lang('SANTAWALK_VIEW_BOARD') }}</a></p>
+</div>
+{% endif %}
+
+<form id="santawalk_acp" method="post" action="{{ U_ACTION }}">
+
+	<fieldset>
+		<legend>{{ lang('ACP_SANTAWALK_GENERAL') }}</legend>
+		<dl>
+			<dt><label for="santawalk_enabled">{{ lang('SANTAWALK_ENABLED') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_ENABLED_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="santawalk_enabled" name="santawalk_enabled" value="1"{{ S_SANTAWALK_ENABLED ? ' checked' }}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="santawalk_enabled" value="0"{{ !S_SANTAWALK_ENABLED ? ' checked' }}> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="santawalk_test_mode">{{ lang('SANTAWALK_TEST_MODE') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_TEST_MODE_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="santawalk_test_mode" name="santawalk_test_mode" value="1"{{ S_SANTAWALK_TEST_MODE ? ' checked' }}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="santawalk_test_mode" value="0"{{ !S_SANTAWALK_TEST_MODE ? ' checked' }}> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_SANTAWALK_PERIOD') }}</legend>
+		<dl>
+			<dt><label for="santawalk_period_enabled">{{ lang('SANTAWALK_PERIOD_ENABLED') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_PERIOD_ENABLED_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="santawalk_period_enabled" name="santawalk_period_enabled" value="1"{{ S_SANTAWALK_PERIOD_ENABLED ? ' checked' }}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="santawalk_period_enabled" value="0"{{ !S_SANTAWALK_PERIOD_ENABLED ? ' checked' }}> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="santawalk_period_start_day">{{ lang('SANTAWALK_PERIOD_START') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_PERIOD_START_EXPLAIN') }}</span></dt>
+			<dd>
+				<select id="santawalk_period_start_day" name="santawalk_period_start_day">
+					{% for day in loops.santawalk_start_days %}<option value="{{ day.VALUE }}"{{ day.S_SELECTED ? ' selected' }}>{{ day.VALUE }}</option>{% endfor %}
+				</select>
+				<select name="santawalk_period_start_month">
+					{% for month in loops.santawalk_start_months %}<option value="{{ month.VALUE }}"{{ month.S_SELECTED ? ' selected' }}>{{ month.NAME }}</option>{% endfor %}
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="santawalk_period_end_day">{{ lang('SANTAWALK_PERIOD_END') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_PERIOD_END_EXPLAIN') }}</span></dt>
+			<dd>
+				<select id="santawalk_period_end_day" name="santawalk_period_end_day">
+					{% for day in loops.santawalk_end_days %}<option value="{{ day.VALUE }}"{{ day.S_SELECTED ? ' selected' }}>{{ day.VALUE }}</option>{% endfor %}
+				</select>
+				<select name="santawalk_period_end_month">
+					{% for month in loops.santawalk_end_months %}<option value="{{ month.VALUE }}"{{ month.S_SELECTED ? ' selected' }}>{{ month.NAME }}</option>{% endfor %}
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('SANTAWALK_PERIOD_STATUS') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_PERIOD_STATUS_EXPLAIN') }}</span></dt>
+			<dd>
+				{{ lang('SANTAWALK_TODAY', SANTAWALK_TODAY) }} –
+				{% if not S_SANTAWALK_PERIOD_ENABLED %}<span class="santawalk-status-on">{{ lang('SANTAWALK_PERIOD_NONE') }}</span>
+				{% elseif S_SANTAWALK_IN_PERIOD %}<span class="santawalk-status-on">{{ lang('SANTAWALK_PERIOD_IN') }}</span>
+				{% else %}<span class="santawalk-status-off">{{ lang('SANTAWALK_PERIOD_OUT') }}</span>{% endif %}
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_SANTAWALK_MOVE') }}</legend>
+		<dl>
+			<dt><label for="santawalk_speed">{{ lang('SANTAWALK_SPEED') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_SPEED_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="santawalk_speed" name="santawalk_speed" value="{{ SANTAWALK_SPEED }}" min="{{ SANTAWALK_SPEED_MIN }}" max="{{ SANTAWALK_SPEED_MAX }}" step="1"> px/s</dd>
+		</dl>
+		<dl>
+			<dt><label for="santawalk_pause">{{ lang('SANTAWALK_PAUSE') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_PAUSE_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="santawalk_pause" name="santawalk_pause" value="{{ SANTAWALK_PAUSE }}" min="{{ SANTAWALK_PAUSE_MIN }}" max="{{ SANTAWALK_PAUSE_MAX }}" step="1"> s</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('ACP_SANTAWALK_POSITION') }}</legend>
+		<dl>
+			<dt><label for="santawalk_vpos_ref">{{ lang('SANTAWALK_VPOS_REF') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_VPOS_REF_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="santawalk_vpos_ref" name="santawalk_vpos_ref" value="bottom"{{ SANTAWALK_VPOS_REF != 'top' ? ' checked' }}> {{ lang('SANTAWALK_VPOS_BOTTOM') }}</label>
+				<label><input type="radio" class="radio" name="santawalk_vpos_ref" value="top"{{ SANTAWALK_VPOS_REF == 'top' ? ' checked' }}> {{ lang('SANTAWALK_VPOS_TOP') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="santawalk_vpos_offset">{{ lang('SANTAWALK_VPOS_OFFSET') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_VPOS_OFFSET_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="santawalk_vpos_offset" name="santawalk_vpos_offset" value="{{ SANTAWALK_VPOS_OFFSET }}" min="{{ SANTAWALK_VPOS_OFFSET_MIN }}" max="{{ SANTAWALK_VPOS_OFFSET_MAX }}" step="1"> px</dd>
+		</dl>
+		<dl>
+			<dt><label for="santawalk_scale">{{ lang('SANTAWALK_SCALE') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_SCALE_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="santawalk_scale" name="santawalk_scale" value="{{ SANTAWALK_SCALE }}" min="{{ SANTAWALK_SCALE_MIN }}" max="{{ SANTAWALK_SCALE_MAX }}" step="5"> %</dd>
+		</dl>
+		<dl>
+			<dt><label for="santawalk_mobile_hide">{{ lang('SANTAWALK_MOBILE_HIDE') ~ lang('COLON') }}</label><br><span>{{ lang('SANTAWALK_MOBILE_HIDE_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="santawalk_mobile_hide" name="santawalk_mobile_hide" value="{{ SANTAWALK_MOBILE_HIDE }}" min="{{ SANTAWALK_MOBILE_HIDE_MIN }}" max="{{ SANTAWALK_MOBILE_HIDE_MAX }}" step="10"> px</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ lang('SANTAWALK_PREVIEW') }}</legend>
+		<p>{{ lang('SANTAWALK_PREVIEW_EXPLAIN') }}</p>
+		<div id="santawalk_preview" style="position: relative; height: 150px; overflow: hidden; border-radius: 7px; background: linear-gradient(to bottom, #6aceff 0%, #0076b1 2px, #12a3eb 92px, #12a3eb 100%);">
+			<div id="santawalk_preview_walker" style="position: absolute; left: 0; will-change: transform;">
+				<img src="{{ SANTAWALK_IMG }}" alt="" style="display: block; width: 100%; height: 100%;">
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}">
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+
+</form>
+
+<script>
+(function () {
+	'use strict';
+
+	var form = document.getElementById('santawalk_acp');
+	var box = document.getElementById('santawalk_preview');
+	var walker = document.getElementById('santawalk_preview_walker');
+	if (!form || !box || !walker || !window.requestAnimationFrame) {
+		return;
+	}
+
+	function num(name, def) {
+		var v = parseFloat(form.elements[name].value);
+		return isNaN(v) ? def : v;
+	}
+
+	function radio(name) {
+		var checked = form.querySelector('input[name="' + name + '"]:checked');
+		return checked ? checked.value : '';
+	}
+
+	var x = null, last = null, resumeAt = 0;
+
+	function frame(now) {
+		var dt = last === null ? 0 : Math.min((now - last) / 1000, 0.1);
+		last = now;
+
+		var scale = Math.max(25, Math.min(300, num('santawalk_scale', 100))) / 100;
+		var w = Math.round(72 * scale), h = Math.round(105 * scale);
+		var offset = num('santawalk_vpos_offset', 0);
+		var speed = Math.max(1, num('santawalk_speed', 60));
+		var pause = Math.max(0, num('santawalk_pause', 0)) * 1000;
+
+		walker.style.width = w + 'px';
+		walker.style.height = h + 'px';
+		if (radio('santawalk_vpos_ref') === 'top') {
+			walker.style.top = offset + 'px';
+			walker.style.bottom = '';
+		} else {
+			walker.style.bottom = offset + 'px';
+			walker.style.top = '';
+		}
+
+		if (x === null) {
+			x = -w;
+		}
+		if (now >= resumeAt) {
+			x += speed * dt;
+			if (x > box.clientWidth) {
+				x = -w;
+				resumeAt = now + pause;
+			}
+		}
+		walker.style.transform = 'translate3d(' + x.toFixed(1) + 'px, 0, 0)';
+
+		window.requestAnimationFrame(frame);
+	}
+
+	window.requestAnimationFrame(frame);
+})();
+</script>
+
+{% include 'overall_footer.html' %}

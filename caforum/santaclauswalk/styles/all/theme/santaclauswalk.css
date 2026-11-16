@@ -1,0 +1,100 @@
+/*  Santa Claus walking in the header
+    ---------------------------------------------------------------------------------
+    The stage covers the whole header. It clips Santa on the left and right edges
+    only, so he can leave the header completely and come back from the other side,
+    while still being allowed to overflow above or below it.
+*/
+
+.santaclaus-stage {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 24%;
+	left: 0;
+	z-index: 1;
+	pointer-events: none;
+	/* Cut Santa off at the left and right edges, so that when he leaves on the
+	   right he never widens the page (no horizontal scrollbar), while still
+	   letting him overflow above or below the header.
+	   "overflow-x: clip" does exactly that; browsers too old to know it fall
+	   back to "overflow: hidden", which also clips vertically. */
+	overflow: hidden;
+	overflow-x: clip;
+	overflow-y: visible;
+}
+
+.santaclaus-walker {
+	position: absolute;
+	left: 0;
+	/* Off-screen on the left until the script takes over */
+	-webkit-transform: translate3d(-100%, 0, 0);
+	transform: translate3d(-100%, 0, 0);
+	will-change: transform;
+	pointer-events: auto;
+	z-index: 10;
+}
+
+.santaclaus-sprite {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: url("./images/santawalk.gif") no-repeat center bottom;
+	background-size: contain;
+	transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.santaclaus-walker:hover .santaclaus-sprite {
+	transform: translateY(-10px) scale(1.08);
+	filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.6));
+}
+
+.santaclaus-hidden {
+	display: none;
+}
+
+/* Test mode (administrators only) */
+.santaclaus-test {
+	outline: 2px dashed #e53935;
+	outline-offset: -2px;
+}
+
+.santaclaus-test .santaclaus-walker {
+	outline: 1px dotted #ffeb3b;
+}
+
+.santaclaus-test-label {
+	position: absolute;
+	top: 4px;
+	left: 50%;
+	transform: translateX(-50%);
+	max-width: calc(100% - 16px);
+	padding: 3px 8px;
+	border-radius: 4px;
+	background: rgba(183, 28, 28, 0.9);
+	color: #fff;
+	font: bold 11px/1.4 Verdana, Helvetica, Arial, sans-serif;
+	text-align: center;
+	white-space: normal;
+}
+
+.santaclaus-test-info {
+	display: block;
+	font-weight: normal;
+	font-family: Consolas, Menlo, monospace;
+}
+
+#snowcap {
+	position: relative;
+	/* display: block; */
+	top: 73%;
+	height: 13%;
+	width: 100%;
+	background: transparent url("./images/snowcap.png");
+	background-size: auto 100%;
+	pointer-events: none;
+	z-index: 99;
+}
+
+#search-box.search-header {
+	top: -37px;
+}

@@ -1,0 +1,20 @@
+{% if S_SANTAWALK_SHOW %}
+	{% INCLUDECSS '@caforum_santaclauswalk/santaclauswalk.css' %}
+	{% INCLUDECSS '@caforum_santaclauswalk/snowfalling.css' %}
+	{% INCLUDEJS '@caforum_santaclauswalk/santaclauswalk.js' %}
+	{% INCLUDEJS '@caforum_santaclauswalk/schnee.js' %}
+
+<div id="santaclaus-stage" class="santaclaus-stage{% if S_SANTAWALK_TEST %} santaclaus-test{% endif %}" data-speed="{{ SANTAWALK_SPEED }}" data-pause="{{ SANTAWALK_PAUSE }}" data-mobile-hide="{{ SANTAWALK_MOBILE_HIDE }}" data-test="{{ S_SANTAWALK_TEST ? 1 : 0 }}">
+	<div id="snowfalling"></div>
+	<div class="santaclaus-walker" style="{{ SANTAWALK_VPOS_REF }}: {{ SANTAWALK_VPOS_OFFSET }}px; width: {{ SANTAWALK_WIDTH }}px; height: {{ SANTAWALK_HEIGHT }}px;" aria-hidden="true">
+		<span class="santaclaus-sprite"></span>
+	</div>
+	{% if S_SANTAWALK_TEST %}
+	<div class="santaclaus-test-label">
+		{{ lang('SANTAWALK_TEST_LABEL') }}{% if S_SANTAWALK_PUBLIC_OFF %} · {{ lang('SANTAWALK_TEST_PUBLIC_OFF') }}{% endif %}{% if S_SANTAWALK_OUT_OF_PERIOD %} · {{ lang('SANTAWALK_TEST_OUT_OF_PERIOD') }}{% endif %}
+		<span class="santaclaus-test-info"></span>
+	</div>
+	{% endif %}
+</div>
+<div id="snowcap"></div>
+{% endif %}
