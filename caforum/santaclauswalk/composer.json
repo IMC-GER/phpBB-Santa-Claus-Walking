@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "A Santa Claus walking across the header, configurable from the ACP",
     "homepage": "https://forums.caforum.fr/",
-    "version": "2.1.2-pl1",
-    "time": "2026-11-15",
+    "version": "2.1.2-pl2",
+    "time": "2026-11-18",
     "license": "GPL-2.0-only",
     "authors": [
         {

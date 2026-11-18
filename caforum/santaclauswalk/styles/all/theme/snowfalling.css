@@ -1,7 +1,17 @@
+/* Snow flurry
+--------------------------------------------- */
+
 #snowfalling {
 	position: relative;
 	display: block;
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
+	pointer-events: none;
+}
+
+.snowflake {
+	position: absolute;
+	filter: blur(1px);
+	pointer-events: none;
 }

@@ -89,7 +89,7 @@
 	top: 73%;
 	height: 13%;
 	width: 100%;
-	background: transparent url("./images/snowcap.png");
+	background: transparent url("./images/snowcap_blur.png");
 	background-size: auto 100%;
 	pointer-events: none;
 	z-index: 99;

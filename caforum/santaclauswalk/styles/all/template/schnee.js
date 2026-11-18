@@ -11,7 +11,7 @@
 const snowAreaId = 'snowfalling';
 
 // maximale Anzahl der sichtbaren Schneeflocken
-const snowFlakeCount = 200;
+const snowFlakeCount = 300;
 
 // die verschiedenen Farbe, die die Schneeflocken haben sollen
 const snowColours = ['#FAFAD9','#AAAACC','#DDDDFF','#ECF1F3','#F3F3F3','#B3CEF5'];
@@ -19,7 +19,7 @@ const snowColours = ['#FAFAD9','#AAAACC','#DDDDFF','#ECF1F3','#F3F3F3','#B3CEF5'
 // die Schriftarten, aus denen die Schneeflocken bestehen sollen
 const snowFonts = ['Lucida Grande', 'Helvetica', 'Arial Black', 'Arial Narrow', 'Monospace', 'Verdana', 'Times', 'Comic Sans MS'];
 
-const snowChar    = '*';	// das Zeichen, das als Schneeflocke verwendet wird
+const snowChar    = '•';	// das Zeichen, das als Schneeflocke verwendet wird
 const snowGravity = 0.6;	// wie schnell die Schneeflocken fallen
 const snowSizeMax = 18;		// die maximale Schriftgröße einer Schneeflocke
 const snowSizeMin = 11;		// die minimale Schriftgröße einer Schneeflocke
@@ -78,8 +78,9 @@ function snowAreaCreateSnowflakes()
 		const span = document.createElement('span');
 
 		span.id			   = 'snwflk' + i;
+		span.className	   = 'snowflake';
 		span.textContent   = snowChar;
-		span.style.cssText = 'position: absolute; top: -' + snowSizeMax + 'px; z-index: ' + (9 + (i % 2 * 2)).toString() + ';';
+		span.style.cssText = 'top: -' + snowSizeMax + 'px; z-index: ' + (9 + (i % 2 * 2)).toString() + ';';
 
 		fragment.appendChild(span);
 	}
@@ -124,7 +125,7 @@ function snowAreaInitSnow() {
 
 	if (!snowInterval) {
 		snowAreaReadStorage();	// Read data and restore the snow flakes
-		snowInterval = window.setInterval(snowAreaUpdateSnow, 50);
+		snowInterval = window.setInterval(snowAreaUpdateSnow, 40);
 	}
 }
 
